@@ -11,3 +11,7 @@ https://www.kaggle.com/hmchuong/xray-bone-shadow-supression
 
 // COVID X-Rays Samples
 https://github.com/ieee8023/covid-chestxray-dataset/tree/master/images
+
+
+// Scar tissue detection in fingerprints
+https://www.mathworks.com/matlabcentral/answers/305216-fingerprint-scar-crease-region-detection
