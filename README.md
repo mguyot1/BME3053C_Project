@@ -22,3 +22,7 @@ https://www.mathworks.com/matlabcentral/answers/68696-how-can-i-extract-the-larg
 
 // Superpixels Documentation
 https://www.mathworks.com/help/images/ref/superpixels.html
+
+
+NIH Article about using deep learning
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7487744/
