@@ -41,7 +41,6 @@
         subplot(1,5,2); imshow(binaryImage)
         subplot(1,5,3); imshow(lungIm)
         subplot(1,5,4); imshow(scar)
-        subplot(1,5,5); imshow(imshow(imoverlay(scar,BW,'cyan'),'InitialMagnification',67))
-
+        subplot(1,5,5); imshow(imoverlay(scar,BW,'cyan'))
     end
     %super pixels?!?!?!??!?!?!
