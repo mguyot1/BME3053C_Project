@@ -1,38 +1,47 @@
-    I = imread('cross1.jpg'); % arbitary ct scan
-    I = im2double(I);
-    I = im2gray(I);
-    
-    %edge detection of lungs
-    s = uint8(255 * mat2gray(I));
-    s = im2bw(s);
-    binaryImage = xor(s,imerode(s, true(3)));
+    image_folder = '/Users/mattn/OneDrive - University of Florida/01 BME/BME3053/New_images';
+    fileNames = dir(fullfile(image_folder, '*.jpg'));
+    total_num_images = numel(fileNames);  
 
-    %fills in surface area of lungs
-    binaryImage = imfill(binaryImage, 'holes');
-    lungsMask = imfill(binaryImage, 'holes');
     
-    %takes the two largest 'blobs' (aka the lungs)
-    [labeledImage, numberOfBlobs] = bwlabel(binaryImage);
-    blobMeasurements = regionprops(labeledImage, 'area', 'Centroid');
-    allAreas = [blobMeasurements.Area];
-    [sortedAreas, sortIndexes] = sort(allAreas, 'descend');
-    biggestBlob = ismember(labeledImage, sortIndexes(1:2));
-    binaryImage = biggestBlob > 0;
-    
-    %masks the pixel index of lungs to original image
-    lungIm = I;
-    lungIm(binaryImage == 0) = 0;
-    
-    %identifies scar tissue
-    scar = lungIm;
-    scar(scar < .5) = 0;
-    
-    
-    figure(1)
-    subplot(1,4,1); imshow(I)
-    subplot(1,4,2); imshow(binaryImage)
-    subplot(1,4,3); imshow(lungIm)
-    subplot(1,4,4); imshow(scar)
+    for n = 1: total_num_images
+        name = fullfile(image_folder, fileNames(n).name);
+        names(n) = {fileNames(n).name}; 
+        
+        I = imread(name);
+        I = im2double(I);
+        I = im2gray(I);
 
+        s = uint8(255 * mat2gray(I));
+        s = imbinarize(s);
+        binaryImage = xor(s,imerode(s, true(4)));
+
+        binaryImage = imfill(binaryImage, 'holes');
+        lungsMask = imfill(binaryImage, 'holes');
+
+        [labeledImage, numberOfBlobs] = bwlabel(binaryImage);
+        blobMeasurements = regionprops(labeledImage, 'area', 'Centroid');
+        allAreas = [blobMeasurements.Area];
+        [sortedAreas, sortIndexes] = sort(allAreas, 'descend');
+        biggestBlob = ismember(labeledImage, sortIndexes(1:2));
+        binaryImage = biggestBlob > 0;
+
+        lungIm = I;
+        lungIm(binaryImage == 0) = 0;
+        lungIm = imclearborder(lungIm,4);
+
+        scar = lungIm;
+        scar(scar < .2) = 0;
+
+        [L,N] = superpixels(scar,500);
+        BW = boundarymask(L);
+       
+        
+        figure(1)
+        subplot(1,5,1); imshow(I)
+        subplot(1,5,2); imshow(binaryImage)
+        subplot(1,5,3); imshow(lungIm)
+        subplot(1,5,4); imshow(scar)
+        subplot(1,5,5); imshow(imshow(imoverlay(scar,BW,'cyan'),'InitialMagnification',67))
+
+    end
     %super pixels?!?!?!??!?!?!
-    %look into super pixels to help identify scar tissue
