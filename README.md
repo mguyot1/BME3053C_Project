@@ -26,3 +26,6 @@ https://www.mathworks.com/help/images/ref/superpixels.html
 
 NIH Article about using deep learning
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7487744/
+
+DCM File Converter
+https://www.mathworks.com/matlabcentral/fileexchange/65852-dicom-to-image-converter-dicom2image-filename-imagetype
