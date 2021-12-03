@@ -6,27 +6,15 @@
 
 %evaluates effectiveness of scar detection based on user input
 function [drawnLungIm, keepGoing, breakOutLoop, advSegment] = scarDetectionAnalysis(image, dirName, n, keepGoing, breakOutLoop, advSegment)
+load('var.mat')
+% check = input('Is the scar tissue properly segmented? Input "yes" or "no" to quit code, press "enter": ', 's');
+% disp(check)
 
-check = input('Is the scar tissue properly segmented? Input "yes" or "no" to quit code, press "enter": ', 's');
-disp(check)
-
-if isempty(check) % pressing 'enter' will terminate program
+if strcmpi(check, 'del') % pressing 'exit' will terminate program
     breakOutLoop = false;
     advSegment = false;
     keepGoing = false;
     drawnLungIm = dirName;
-end
-
-while strcmpi(check, 'yes') + strcmpi(check, 'no') == 0 && breakOutLoop % unknown input
-    check = input('Invalid input; please input "yes" or "no". To quit code, press "enter": ', 's');
-    disp(check)
-    
-    if isempty(check) % pressing 'enter' will terminate program
-        breakOutLoop = false;
-        keepGoing = false;
-        drawnLungIm = dirName;
-
-    end
 end
 
 if strcmpi(check,'no') == 1 %input is 'no'
@@ -38,15 +26,22 @@ elseif strcmpi(check,'yes') == 1 %input is 'yes'
 end
 
 if advSegment %reruns lung segmentation given new restricted edge
-    disp('Please outline the perimeter of the LEFT lung')
-    imshow(image); h = drawfreehand('color', 'k');
-    saveas(figure(n), 'new.jpg'); %save image of new left lung edge
-
-    disp('Please outline the perimeter of the RIGHT lung')
-    imshow(imread('new.jpg')); h = drawfreehand('color', 'k');
-    saveas(figure(n), 'new.jpg');
-    drawnLungIm = 'new.jpg'; %save image of new right lung edge
-
+    waitfor(advSegGUI)
+    load('var.mat');
+    
+    %obtains (x,y) coordinates of spline curves for left and right lung
+    [xLeftSmooth, yLeftSmooth] = splineCurveLung(xLeft, yLeft);
+    [xRightSmooth, yRightSmooth] = splineCurveLung(xRight, yRight);
+    
+    figure(n);
+    imshow(I);
+    hold on;
+    plot(xLeftSmooth, yLeftSmooth, 'k', xRightSmooth, yRightSmooth, 'k')
+    
+    saveas(figure(n), 'new.jpg') %saves figure to 'new.jpg'
+    drawnLungIm = 'new.jpg';
+    
 end
 
+save('var.mat', '-append');
 end
