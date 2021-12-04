@@ -9,8 +9,8 @@ function lungIm = reduceBorder(lungIm, n)
 lungIm1 = lungIm;
 w = length(lungIm(1,:));
 h = length(lungIm(:,1));
-for ii = 3:h-2
-    for jj = 3:w-2
+for ii = n+1:h-n
+    for jj = n+1:w-n
         if lungIm1((ii + n),(jj + n)) == 0
             lungIm(ii,jj) = 0;
         elseif lungIm1((ii - n),(jj + n)) == 0
