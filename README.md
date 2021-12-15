@@ -5,7 +5,7 @@ This repository is for the final project of BME3053C - Computer Applications for
 Link to presentation:
 Link to final report:
 
-To run this project, open the mainLive.m file. Change the directory to the directory that you have the image files saved in ("cropped_images").
+To run this project, open the mainLive.mlx file. Change the directory to the directory that you have the image files saved in ("cropped_images" from the GitHub).
 
 // COVID X-Rays Samples
 https://github.com/ieee8023/covid-chestxray-dataset/tree/master/images
